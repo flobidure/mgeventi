@@ -75,6 +75,34 @@ def confluence(df, threshold=4):
     return sig
 
 
+def pullback_breakout(df, lookback=20):
+    """Continuation de tendance : cassure du plus-haut récent, alignée à la tendance,
+    confirmée par le volume. Conçue pour des objectifs lointains (R:R ~3) :
+    on ne prend que les ruptures dans le sens de la tendance dominante.
+
+    Règles LONG (symétriques en SHORT) :
+      1. Tendance haussière : EMA20 > EMA50 ET close > EMA50.
+      2. Cassure : la clôture franchit le plus-haut des `lookback` barres précédentes.
+      3. Confirmation : volume au-dessus de sa moyenne (vol_z > 0).
+      4. Filtre momentum : RSI14 > 50.
+    """
+    up = (df.ema_20 > df.ema_50) & (df.close > df.ema_50)
+    down = (df.ema_20 < df.ema_50) & (df.close < df.ema_50)
+    hh = df.high.rolling(lookback, min_periods=lookback).max().shift(1)
+    ll = df.low.rolling(lookback, min_periods=lookback).min().shift(1)
+    brk_up = (df.close > hh) & (df.close.shift(1) <= hh)
+    brk_dn = (df.close < ll) & (df.close.shift(1) >= ll)
+    vol_ok = df.vol_z > 0
+
+    long_sig = up & brk_up & vol_ok & (df.rsi_14 > 50)
+    short_sig = down & brk_dn & vol_ok & (df.rsi_14 < 50)
+
+    sig = pd.Series(0, index=df.index)
+    sig[long_sig] = 1
+    sig[short_sig & ~long_sig] = -1
+    return sig
+
+
 def get_signal(df, name, **kw):
     if name == "orb":
         return opening_range_breakout(df, kw.get("or_minutes", 30))
@@ -82,4 +110,6 @@ def get_signal(df, name, **kw):
         return trend_pullback(df)
     if name == "confluence":
         return confluence(df, kw.get("threshold", 4))
+    if name == "pullback_breakout":
+        return pullback_breakout(df, kw.get("lookback", 20))
     raise ValueError(f"Stratégie inconnue : {name}")

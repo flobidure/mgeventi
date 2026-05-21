@@ -163,9 +163,11 @@ def report(name, trades, eq, df, args):
 def main():
     p = argparse.ArgumentParser(description="Backtest intraday sélectif.")
     p.add_argument("csv")
-    p.add_argument("--strategy", required=True, choices=["orb", "trend_pullback", "confluence"])
+    p.add_argument("--strategy", required=True,
+                   choices=["orb", "trend_pullback", "confluence", "pullback_breakout"])
     p.add_argument("--or-minutes", type=int, default=30, help="Durée du range d'ouverture (orb).")
     p.add_argument("--threshold", type=int, default=4, help="Seuil de score (confluence).")
+    p.add_argument("--lookback", type=int, default=20, help="Fenêtre de cassure (pullback_breakout).")
     # garde-fous
     p.add_argument("--max-trades", type=int, default=5, help="Plafond de trades par jour.")
     p.add_argument("--max-losses", type=int, default=2, help="Arrêt de la journée après N pertes.")
@@ -182,7 +184,8 @@ def main():
     args = p.parse_args()
 
     df = add_indicators(load_ohlcv(args.csv))
-    sig = get_signal(df, args.strategy, or_minutes=args.or_minutes, threshold=args.threshold)
+    sig = get_signal(df, args.strategy, or_minutes=args.or_minutes,
+                     threshold=args.threshold, lookback=args.lookback)
     trades, eq = run(df, sig, args)
     report(args.strategy, trades, eq, df, args)
 

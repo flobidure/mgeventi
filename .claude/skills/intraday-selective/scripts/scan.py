@@ -14,9 +14,11 @@ LABEL = {1: "ACHAT", -1: "VENTE", 0: "—"}
 def main():
     p = argparse.ArgumentParser(description="Scanner de setups intraday sélectifs.")
     p.add_argument("csvs", nargs="+")
-    p.add_argument("--strategy", default="confluence", choices=["orb", "trend_pullback", "confluence"])
+    p.add_argument("--strategy", default="confluence",
+                   choices=["orb", "trend_pullback", "confluence", "pullback_breakout"])
     p.add_argument("--or-minutes", type=int, default=30)
     p.add_argument("--threshold", type=int, default=4)
+    p.add_argument("--lookback", type=int, default=20)
     p.add_argument("--atr-stop", type=float, default=1.5)
     p.add_argument("--atr-target", type=float, default=2.5)
     args = p.parse_args()
@@ -29,7 +31,8 @@ def main():
     for path in args.csvs:
         name = os.path.splitext(os.path.basename(path))[0]
         df = add_indicators(load_ohlcv(path))
-        sig = get_signal(df, args.strategy, or_minutes=args.or_minutes, threshold=args.threshold)
+        sig = get_signal(df, args.strategy, or_minutes=args.or_minutes,
+                         threshold=args.threshold, lookback=args.lookback)
         last = df.iloc[-1]
         s = int(sig.iloc[-1])
         atr = last.atr_14
