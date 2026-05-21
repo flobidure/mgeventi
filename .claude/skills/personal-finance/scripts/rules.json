@@ -1,0 +1,14 @@
+{
+  "Revenus": ["salaire", "salary", "virement recu", "remboursement", "paie", "paye", "dividende", "interets"],
+  "Logement": ["loyer", "rent", "edf", "engie", "gaz", "electricite", "eau", "syndic", "assurance habitation", "mortgage", "credit immobilier"],
+  "Alimentation": ["carrefour", "leclerc", "auchan", "lidl", "intermarche", "monoprix", "franprix", "casino", "supermarche", "boulangerie", "grocery", "super u"],
+  "Restaurants": ["restaurant", "mcdonald", "burger", "uber eats", "deliveroo", "just eat", "cafe", "bar", "brasserie", "kfc"],
+  "Transport": ["sncf", "ratp", "uber", "essence", "total", "shell", "carburant", "peage", "parking", "navigo", "blablacar", "fuel", "gas station"],
+  "Sante": ["pharmacie", "medecin", "docteur", "hopital", "mutuelle", "dentiste", "opticien", "laboratoire", "pharmacy"],
+  "Abonnements": ["netflix", "spotify", "amazon prime", "disney", "canal", "free", "orange", "sfr", "bouygues", "abonnement", "subscription", "youtube premium", "icloud"],
+  "Loisirs": ["cinema", "fnac", "decathlon", "steam", "playstation", "concert", "musee", "salle de sport", "gym", "fitness"],
+  "Shopping": ["amazon", "zara", "h&m", "zalando", "ikea", "leroy merlin", "darty", "boulanger", "shein"],
+  "Frais bancaires": ["frais", "commission", "agios", "cotisation carte", "bank fee", "interets debiteurs"],
+  "Impots": ["impot", "tresor public", "dgfip", "taxe", "urssaf", "tax"],
+  "Retrait": ["retrait", "dab", "distributeur", "withdrawal", "atm"]
+}

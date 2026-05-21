@@ -1,0 +1,10 @@
+{
+  "Logement": 900,
+  "Alimentation": 400,
+  "Restaurants": 150,
+  "Transport": 120,
+  "Sante": 80,
+  "Abonnements": 60,
+  "Loisirs": 150,
+  "Shopping": 200
+}
